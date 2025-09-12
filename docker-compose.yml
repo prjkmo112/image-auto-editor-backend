@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:15.13-alpine
+    container_name: iae-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: image_auto_editor
+    ports:
+      - "5432:5432"
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
+#      - ./docker/postgres:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d image_auto_editor -h 127.0.0.1"]
+      interval: 2s
+      timeout: 2s
+      retries: 15
+
+  redis:
+    image: redis:8.2.1
+    container_name: iae-redis
+    command: ["redis-server","--appendonly","yes"]
+    ports:
+      - "6379:6379"

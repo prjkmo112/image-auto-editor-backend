@@ -1,0 +1,23 @@
+# OS / Editor
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# ai
+.claude/
+
+# uv
+.venv/
+.pycache/
+
+# dummy files
+images/
+scripts/**/*.sql
+
+# log files
+*.log
+
+.env
+
+.py.*
