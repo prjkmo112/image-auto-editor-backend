@@ -20,3 +20,10 @@ def valid_image_depends(file: UploadFile):
         raise HTTPException(status_code=400, detail="File is not image.")
 
     return file
+
+def valid_image_input_depends(file: UploadFile):
+    if file.size > settings.MAX_FILE_SIZE:
+        raise HTTPException(
+            status_code=413,
+            detail=f"File too large. Maximum size is {settings.MAX_FILE_SIZE / (1024 * 1024):.1f}MB",
+        )

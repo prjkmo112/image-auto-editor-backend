@@ -9,6 +9,7 @@ class TargetImageResponse(BaseModel):
 
     id: int
     name: str
+    url_id: Optional[str] = None
     file_path: str
     file_size: int
     mime_type: str

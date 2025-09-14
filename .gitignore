@@ -10,6 +10,7 @@ Thumbs.db
 # uv
 .venv/
 .pycache/
+__pycache__/
 
 # dummy files
 images/

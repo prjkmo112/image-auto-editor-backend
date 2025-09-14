@@ -67,6 +67,7 @@ class TargetImages(Base):
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     name: Mapped[str] = mapped_column(String(255))
+    url_id: Mapped[Optional[str]] = mapped_column(String(255))
     file_path: Mapped[str] = mapped_column(String(500))
     file_path_type: Mapped[str] = mapped_column(
         String(50), server_default="local"

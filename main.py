@@ -1,3 +1,4 @@
+import os
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
@@ -15,7 +16,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.common import utils
 
-from app.api import target_images, proc_image
+from app.api import target_images, proc_image, get_image
 from redis import asyncio as aioredis
 
 
@@ -57,6 +58,7 @@ app.add_middleware(
 
 app.include_router(target_images.router, prefix="/api/target-images", tags=["target-images"])
 app.include_router(proc_image.router, prefix="/api/proc-images", tags=["proc-image"])
+app.include_router(get_image.router, prefix="/api/image", tags=["image"])
 
 @app.get("/")
 async def root():
