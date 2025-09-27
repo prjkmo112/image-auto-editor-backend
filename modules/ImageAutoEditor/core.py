@@ -1,5 +1,5 @@
 import logging
-from typing import List
+from typing import List, Optional
 
 import cv2
 import numpy as np
@@ -36,7 +36,9 @@ def find_matches(
 
 
 def __find_matches_single(
-    original_img: str, target_imgs: List[str], mbuilder
+    original_img: str,
+    target_imgs: List[str],
+    mbuilder: MatcherBuilder
 ) -> List[types.MatchResult]:
     """Single process of find_matches"""
     original_img = utils.load_img(original_img)
@@ -63,14 +65,13 @@ def slice_image(
     mbuilder: MatcherBuilder = None,
     inpaint: bool = True,
     multi_process_count: int = 1,
-) -> np.ndarray | None:
+) -> Optional[np.ndarray]:
     """
     원본 이미지에서 등록된 객체들을 제거
 
         Args:
             original_img: 원본 이미지
             target_imgs: 타겟 이미지
-            output_path: 결과 이미지 저장 경로 (선택사항)
             mbuilder
             inpaint
             multi_process_count
@@ -106,14 +107,13 @@ def mark_image(
     target_imgs: List[str],
     mbuilder: MatcherBuilder = None,
     multi_process_count: int = 1,
-) -> np.ndarray | None:
+) -> Optional[np.ndarray]:
     """
     해시 유사도로 찾은 영역들을 빨간색 사각형으로 표시
 
     Args:
         original_img: 원본 이미지 경로
         target_imgs
-        output_path: 결과 이미지 저장 경로
         mbuilder
         multi_process_count
 

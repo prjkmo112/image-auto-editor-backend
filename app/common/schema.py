@@ -25,3 +25,24 @@ class TargetImageListResponse(BaseModel):
     items: List[TargetImageResponse]
     page: int
     cnt: int
+
+
+class ProcessedImageResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    url_id: Optional[str] = None
+    marked_file_size: int
+    marked_file_mime_type: str
+    marked_file_type: str = "local"
+    sliced_file_size: int
+    sliced_file_mime_type: str
+    sliced_file_type: str = "local"
+    created_at: datetime
+
+class ProcessedImageListResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    items: List[ProcessedImageResponse]
+    page: int
+    cnt: int

@@ -1,17 +1,15 @@
-from typing import List, Optional
+from typing import List
 import os
 from pathlib import Path
 import uuid
 import hashlib
 
 import aiofiles
-from fastapi import APIRouter, Depends, HTTPException, Query, Form
-from fastapi_cache.decorator import cache
-from sqlalchemy import select, delete, update
+from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from starlette.datastructures import UploadFile
 
-from app.common.api_valid import valid_image_depends
+from app.common.depends import depends_image, depends_tags
 from app.common.schema import TargetImageListResponse, TargetImageResponse
 from app.db.database import get_db
 from app.db.models import TargetImages
@@ -22,9 +20,9 @@ router = APIRouter()
 @router.post("/register")
 async def create_target_image(
     name: str,
-    tags: List[str],
-    file: UploadFile = Depends(valid_image_depends),
+    tags: List[str] = Depends(depends_tags.tags_str_depends),
     is_active: bool = True,
+    file: UploadFile = Depends(depends_image.valid_image_depends),
     db: AsyncSession = Depends(get_db),
 ):
     """
