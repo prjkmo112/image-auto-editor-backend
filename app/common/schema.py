@@ -36,7 +36,7 @@ class ProcessedImageResponse(BaseModel):
     marked_file_mime_type: str
     marked_file_type: str = "local"
     sliced_file_size: Optional[int] = None
-    sliced_file_mime_type: str
+    sliced_file_mime_type: Optional[str] = None
     sliced_file_type: str = "local"
     created_at: datetime
 
