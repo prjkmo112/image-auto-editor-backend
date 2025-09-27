@@ -66,8 +66,8 @@ async def proc_image(
 
     # target img - get path
     query = (select(TargetImages.file_path)
-             .where(TargetImages.is_active.is_(True))
-             .where(TargetImages.tags.op('@>')(tags)))
+             .where(TargetImages.is_active)
+             .where(TargetImages.tags.contains(tags)))
     result = await db.execute(query)
     target_imgs = result.scalars().all()
 

@@ -19,9 +19,8 @@ class MatchResult:
     scale: float = 1.0
 
     def __setattr__(self, key, value):
-        if key == "x" and value < 0: value = 0
-        if key == "y" and value < 0: value = 0
-        if key == "similarity" and value < 0: value = 0
+        if key in ("x", "y", "similarity") and value < 0:
+            value = 0
         super().__setattr__(key, value)
 
     def __iter__(self):

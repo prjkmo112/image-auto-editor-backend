@@ -1,8 +1,7 @@
 from typing import List, Optional
 
-from sqlalchemy import ARRAY, BigInteger, Boolean, CheckConstraint, DateTime, ForeignKeyConstraint, Identity, Index, Integer, PrimaryKeyConstraint, String, Text, UniqueConstraint, text
-from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.ext.mutable import MutableList
+from sqlalchemy import BigInteger, CheckConstraint, DateTime, ForeignKeyConstraint, Identity, Index, Integer, PrimaryKeyConstraint, String, Text, UniqueConstraint, text
+from sqlalchemy.dialects.postgresql import JSONB, ARRAY, BOOLEAN
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 import datetime
 
@@ -50,8 +49,9 @@ class SourceImages(Base):
     file_size: Mapped[int] = mapped_column(BigInteger)
     mime_type: Mapped[str] = mapped_column(String(100))
     file_hash: Mapped[str] = mapped_column(String(64))
-    tags: Mapped[List[str]] = mapped_column(
-        MutableList.as_mutable(ARRAY(Text())),
+    tags: Mapped[list[str]] = mapped_column(
+        # MutableList.as_mutable(ARRAY(Text())),
+        ARRAY(Text()),
         default=list,
         server_default=text('ARRAY[]::text[]'),
         nullable=False
@@ -80,14 +80,15 @@ class TargetImages(Base):
     file_size: Mapped[int] = mapped_column(BigInteger)
     mime_type: Mapped[str] = mapped_column(String(100))
     file_hash: Mapped[str] = mapped_column(String(64))
-    tags: Mapped[List[str]] = mapped_column(
-        MutableList.as_mutable(ARRAY(Text())),
+    tags: Mapped[list[str]] = mapped_column(
+        # MutableList.as_mutable(ARRAY(Text())),
+        ARRAY(Text()),
         default=list,
         server_default=text('ARRAY[]::text[]'),
         nullable=False
     )
     file_path_type: Mapped[str] = mapped_column(String(50), server_default=text("'local'::character varying"))
-    is_active: Mapped[Optional[bool]] = mapped_column(Boolean, server_default=text('true'))
+    is_active: Mapped[Optional[bool]] = mapped_column(BOOLEAN, server_default=text('true'))
     created_at: Mapped[Optional[datetime.datetime]] = mapped_column(DateTime(True), server_default=text('CURRENT_TIMESTAMP'))
     url_id: Mapped[Optional[str]] = mapped_column(String(255))
 
