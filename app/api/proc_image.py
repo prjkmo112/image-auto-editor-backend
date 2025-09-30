@@ -6,7 +6,7 @@ from typing import List
 
 import aiofiles
 import cv2
-from fastapi import APIRouter, UploadFile, Depends
+from fastapi import APIRouter, UploadFile, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -83,6 +83,9 @@ async def proc_image(
         inpaint=False,
         multi_process_count=os.cpu_count()
     )
+
+    if sliced is None or marked is None:
+        raise HTTPException(status_code=400, detail="No match")
 
     output_sliced_dir = Path(os.getenv("SAVED_IMG_DIR")) / "sliced"
     output_marked_dir = Path(os.getenv("SAVED_IMG_DIR")) / "marked"
