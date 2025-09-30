@@ -23,7 +23,7 @@ class SiftMatcher(BaseMatcher):
         self.sift = cv2.SIFT.create()
         self.bf_matcher = cv2.BFMatcher()
 
-    def match(self, org: np.ndarray, targ: np.ndarray) -> list[MatchResult]:
+    def _match_impl(self, org: np.ndarray, targ: np.ndarray) -> list[MatchResult]:
         org = cv2.cvtColor(org, cv2.COLOR_BGR2GRAY)
         targ = cv2.cvtColor(targ, cv2.COLOR_BGR2GRAY)
 

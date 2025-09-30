@@ -31,3 +31,8 @@ PERFORMANCE_CONFIG = {
     "batch_size": 50,  # 배치 처리 크기
     "early_stop": False,  # 매칭되는 즉시 종료 여부
 }
+
+# matchers 의 match 함수의 config
+MATCHERS_CONFIG = {
+    "except_overlap": True, # 매칭 중 겹치는 부분 제거
+}

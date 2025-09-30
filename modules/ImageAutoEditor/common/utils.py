@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, runtime_checkable, Protocol, Union, Sequence, Mapping
 import cv2
 import numpy as np
 from pathlib import Path
@@ -52,3 +52,33 @@ def load_target_imgs(img_paths: List[str]) -> List[np.ndarray]:
         targets.append(load_img(path))
 
     return targets
+
+@runtime_checkable
+class OverlapRange(Protocol):
+    x: int
+    y: int
+    w: int
+    h: int
+
+RangeInputType = Union[OverlapRange, Mapping[str, int], Sequence[int]]
+
+def parse_range(r: RangeInputType):
+    if isinstance(r, OverlapRange):
+        x, y, w, h = r.x, r.y, r.w, r.h
+    elif isinstance(r, Mapping):
+        x, y, w, h = r["x"], r["y"], r["w"], r["h"]
+    else:
+        x, y, w, h = r
+
+    return x, y, w, h
+
+def is_overlap(range1: RangeInputType, range2: RangeInputType) -> bool:
+    x1, y1, w1, h1 = parse_range(range1)
+    x2, y2, w2, h2 = parse_range(range2)
+
+    min_x_end = min(x1 + w1, x2 + w2)
+    max_x_start = max(x1, x2)
+    min_y_end = min(y1 + h1, y2 + h2)
+    max_y_start = max(y1, y2)
+
+    return min_x_end > max_x_start and min_y_end > max_y_start

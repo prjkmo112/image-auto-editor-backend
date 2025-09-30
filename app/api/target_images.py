@@ -6,6 +6,7 @@ import hashlib
 
 import aiofiles
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile
+from fastapi_cache.decorator import cache
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -86,7 +87,7 @@ async def key_builder(fn, namespace, **kwargs):
     return key
 
 @router.get("/list", response_model=TargetImageListResponse)
-# @cache(expire=180)
+# @cache(expire=20)
 async def get_target_images_list(
     page: int = Query(1, ge=1, description="페이지 번호"),
     size: int = Query(10, ge=1, le=100, description="페이지 크기"),
