@@ -7,7 +7,7 @@ from typing import List
 import aiofiles
 import cv2
 from fastapi import APIRouter, UploadFile, Depends, HTTPException
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.common.depends import depends_tags
@@ -121,16 +121,22 @@ async def get_proc_image_list(
         size: int = 10,
         db: AsyncSession = Depends(get_db),
 ):
-    query = select(ProcessedImages)
-
     query = (
-        query.order_by(ProcessedImages.created_at.desc())
-            .offset((page - 1) * size)
-            .limit(size)
+        select(
+            ProcessedImages,
+            func.count().over().label("total_cnt")
+        )
+        .order_by(ProcessedImages.created_at.desc())
+        .offset((page - 1) * size)
+        .limit(size)
     )
     result = await db.execute(query)
-    items_iter = result.scalars()
+    rows = result.all()
 
-    items = [ ProcessedImageResponse.model_validate(item) for item in items_iter ]
+    items: list[ProcessedImageResponse] = []
+    total = 0
+    for proc, total_cnt in rows:
+        items.append(ProcessedImageResponse.model_validate(proc))
+        total = total_cnt
 
-    return ProcessedImageListResponse(items=items, cnt=len(items), page=page)
+    return ProcessedImageListResponse(items=items, cnt=total, page=page)
