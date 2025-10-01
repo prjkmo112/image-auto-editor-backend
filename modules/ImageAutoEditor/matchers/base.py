@@ -36,7 +36,7 @@ def preproc_match(func):
             matches = func(self, org, targ)
 
             # log
-            self.__log_result(matches)
+            self._log_result(matches)
 
             return matches
         except Exception as e:
@@ -53,16 +53,24 @@ class BaseMatcher(ABC):
         self.threshold = threshold
 
     @preproc_match
-    @abstractmethod
     def match(self, org: np.ndarray, targ: np.ndarray) -> list[MatchResult]:
         """
         Args:
             org (np.ndarray): 원본 이미지
             targ (np.ndarray): 타겟 이미지
         """
-        pass
+        return self._match_impl(org, targ)
 
-    def __log_result(self, matches: List[MatchResult]) -> None:
+    @abstractmethod
+    def _match_impl(self, org: np.ndarray, targ: np.ndarray) -> list[MatchResult]:
+        """
+        Args:
+            org (np.ndarray): 원본 이미지
+            targ (np.ndarray): 타겟 이미지
+        """
+        raise NotImplementedError
+
+    def _log_result(self, matches: List[MatchResult]) -> None:
         logger.debug(f"[{self.name}] {len(matches)}개 매칭 발견")
         for i, match in enumerate(matches[:3]):  # 최대 3개만 출력
             logger.debug(

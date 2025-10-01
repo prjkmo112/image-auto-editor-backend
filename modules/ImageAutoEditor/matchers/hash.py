@@ -27,7 +27,7 @@ class HashMatcher(BaseMatcher):
         if method not in get_args(HashMethod):
             raise ValueError("Invalid template matching method")
 
-    def match(self, org: np.ndarray, targ: np.ndarray) -> List[MatchResult]:
+    def _match_impl(self, org: np.ndarray, targ: np.ndarray) -> List[MatchResult]:
         template_hash = self.__calculate_hash(targ)
         matches = self.__sliding_window_match(
             org, template_hash, targ.shape[:2]

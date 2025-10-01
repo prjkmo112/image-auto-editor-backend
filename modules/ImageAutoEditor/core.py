@@ -183,7 +183,7 @@ def mark_and_slice_image(
 
     if len(matches) == 0:
         logger.error("No match")
-        return None
+        return None, None
 
     # mark - 복사본 생성
     mark_result_image = original_img.copy()

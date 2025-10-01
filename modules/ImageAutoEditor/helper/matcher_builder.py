@@ -56,7 +56,6 @@ class MatcherBuilder:
         matches = []
         for matcher in self.matchers:
             res = matcher.match(org, targ)
-            logger.debug(f"✅ {matcher.name}: {len(res)}개 매칭")
 
             matches.extend(res)
 
