@@ -5,7 +5,7 @@ from functools import wraps
 
 import numpy as np
 
-from modules.ImageAutoEditor.common.types import MatchResult
+from app.modules.ImageAutoEditor.common.types import MatchResult
 
 logger = logging.getLogger(__name__)
 

@@ -4,8 +4,8 @@ from typing import List
 
 import numpy as np
 
-from modules.ImageAutoEditor.common.types import TemplateMethod, HashMethod
-from modules.ImageAutoEditor.matchers import (
+from app.modules.ImageAutoEditor.common.types import TemplateMethod, HashMethod
+from app.modules.ImageAutoEditor.matchers import (
     BaseMatcher,
     TemplateMatcher,
     HashMatcher,

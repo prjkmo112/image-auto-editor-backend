@@ -1,24 +1,41 @@
 FROM python:3.12-slim AS base
 
-RUN alembic upgrade head
+WORKDIR /iae
+
+RUN pip install uv
+
+COPY pyproject.toml ./
+COPY uv.lock ./
+
+FROM base AS builder
+
+RUN uv sync --frozen --no-dev
+
+FROM base AS runtime
 
 RUN useradd -m -u 10001 appuser
 
-WORKDIR /iae
+ENV VIRTUAL_ENV=/iae/.venv
+ENV PATH=/iae/.venv/bin:$PATH
+
+ENV CORS_ALLOW_ORIGINS=http://localhost:5432
+ENV DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/image_auto_editor
+ENV SAVED_IMG_DIR=./images
+
+COPY --from=builder /iae/.venv /iae/.venv
 
 COPY app /iae/app
 COPY alembic /iae/alembic
-COPY alembic.ini /app/alembic.ini
+COPY alembic.ini /iae/alembic.ini
 
-# entrypoint
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh && chown -R appuser:appuser /app
+RUN chmod -R 755 /iae
+RUN chown -R appuser:appuser /iae
 
 USER appuser
 
+RUN mkdir "/iae/logs"
+
 EXPOSE 8000
 
-#HEALTHCHECK
-
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/iae/app/entrypoint.sh"]
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

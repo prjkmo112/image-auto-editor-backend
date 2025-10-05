@@ -15,7 +15,7 @@ from app.common.depends.depends_image import valid_image_depends
 from app.common.schema import ProcessedImageResponse, ProcessedImageListResponse
 from app.db.database import get_db
 
-from modules.ImageAutoEditor import mark_and_slice_image, MatcherBuilder
+from app.modules.ImageAutoEditor import mark_and_slice_image, MatcherBuilder
 from app.db.models import SourceImages, TargetImages, ProcessedImages
 
 router = APIRouter()
@@ -29,6 +29,7 @@ async def proc_image(
     """
     image proc
     """
+
     # orgfile - make upload dir
     upload_dir = Path(os.getenv("SAVED_IMG_DIR")) / "oimg"
     upload_dir.mkdir(parents=True, exist_ok=True)

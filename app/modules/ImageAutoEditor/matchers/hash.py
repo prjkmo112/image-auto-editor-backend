@@ -5,7 +5,7 @@ import numpy as np
 import logging
 
 from .base import BaseMatcher
-from modules.ImageAutoEditor.common.types import HashMethod, MatchResult
+from app.modules.ImageAutoEditor.common.types import HashMethod, MatchResult
 
 logger = logging.getLogger(__name__)
 

@@ -26,7 +26,7 @@ logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler("app.log", mode="a", encoding="utf-8"),
+        logging.FileHandler("/iae/logs/app.log", mode="a", encoding="utf-8"),
         logging.StreamHandler(sys.stdout),
     ],
 )
@@ -35,22 +35,25 @@ logging.basicConfig(
 logging.getLogger('fastapi_cache').setLevel(logging.DEBUG)
 logging.getLogger('fastapi_cache.decorator').setLevel(logging.DEBUG)
 
-@asynccontextmanager
-async def lifespan(_: FastAPI) -> AsyncIterator[None]:
-    redisdb = aioredis.from_url("redis://localhost:6379/0")
-    FastAPICache.init(RedisBackend(redisdb), prefix="fastapi-cache")
-    yield
+# @asynccontextmanager
+# async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+#     redisdb = aioredis.from_url("redis://localhost:6379/0")
+#     FastAPICache.init(RedisBackend(redisdb), prefix="fastapi-cache")
+#     yield
 
 app = FastAPI(
     title="Image Auto Editor API",
     description="이미지 자동 편집을 위한 REST API 서비스",
     version=pyproj["project"]["version"],
-    lifespan=lifespan,
+    # lifespan=lifespan,
 )
+
+cors_origin = [ v.strip() for v in os.getenv("ALLOWED_ORIGINS", "").split(",") ]
+print(cors_origin)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=[ v.strip() for v in os.getenv("ALLOWED_ORIGINS", "").split(",") ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

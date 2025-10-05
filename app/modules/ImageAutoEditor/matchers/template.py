@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 
 from .base import BaseMatcher
-from modules.ImageAutoEditor.common.types import TemplateMethod, MatchResult
+from app.modules.ImageAutoEditor.common.types import TemplateMethod, MatchResult
 from ..common import utils
 from ..common.config import MATCHERS_CONFIG
 
