@@ -4,8 +4,8 @@ from typing import List
 
 import numpy as np
 
-from modules.ImageAutoEditor.common.types import TemplateMethod, HashMethod
-from modules.ImageAutoEditor.matchers import (
+from app.modules.ImageAutoEditor.common.types import TemplateMethod, HashMethod
+from app.modules.ImageAutoEditor.matchers import (
     BaseMatcher,
     TemplateMatcher,
     HashMatcher,
@@ -56,7 +56,6 @@ class MatcherBuilder:
         matches = []
         for matcher in self.matchers:
             res = matcher.match(org, targ)
-            logger.debug(f"✅ {matcher.name}: {len(res)}개 매칭")
 
             matches.extend(res)
 

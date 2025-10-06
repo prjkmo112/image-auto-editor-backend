@@ -20,5 +20,3 @@ scripts/**/*.sql
 *.log
 
 .env
-
-.py.*

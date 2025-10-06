@@ -1,5 +1,5 @@
 from fastapi import HTTPException, UploadFile
-from . import settings
+from app.common import settings
 
 
 def valid_image_depends(file: UploadFile):
@@ -13,7 +13,7 @@ def valid_image_depends(file: UploadFile):
     if file_extension.lower() not in settings.ALLOWED_IMG_EXTENSIONS:
         raise HTTPException(
             status_code=400,
-            detail=f"Invalid file type. Allowed types: {', '.join(settings.ALLOWED_EXTENSIONS)}",
+            detail=f"Invalid file type. Allowed types: {', '.join(settings.ALLOWED_IMG_EXTENSIONS)}",
         )
 
     if not file.content_type.startswith("image/"):
